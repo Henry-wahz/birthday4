@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 30px;
+            text-align: center;
+            background :linear-gradient( to left, rgb(128, 8, 214), rgb(255, 177, 190)) #cbcdcb;
+            font-family: 'Poppins', sans-serif;
+   
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+        }
+
+        section {
+           /* From https://css.glass */
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+             border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2vmin;
+            max-width: 400px;
+            padding: 7vmin;
+            margin: 0 auto;
+            border-radius: 2vmin;
+           
+        }
+
+        #timeDisplay {
+            margin-bottom: 2vmin;
+            font-weight: bold;
+        }
+
+        .question-card {
+            background-color: rgb(196, 249, 244);
+            padding: 3vmin;
+            border-radius: 2vmin;
+            margin-bottom: 3vmin;
+        }
+
+        .feedback {
+            height: 30px;
+            font-weight: bolder;
+
+        }
+        button {
+            background: lightgray;
+            border: none;
+            cursor: pointer;
+            padding: 3.5vmin;
+            font-size: 17px;
+            border-radius: 1vmin;
+            margin-right: 2vmin;
+            font-weight: bold;
+        }
+        #nextBtn {
+            display: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45vh;
+
+        }
+        #options > button {
+           margin-bottom: 10px;
+        }
+
+
+
+  #container {
+    text-align: center;
+  }
+
+  button {
+    padding: 15px 25px;
+    font-size: 20px;
+    border: none;
+    background-color: #ff66b2;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background-color: #ff3385;
+  }
+
+  #message {
+    display: none;
+    font-size: 3em;
+    color: #ff3399;
+    margin-top: 30px;
+    font-weight: bold;
+    animation: pop 0.6s ease-out forwards;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  .balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 60px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: floatUp 6s ease-in infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-110vh); opacity: 0; }
+  }
+
+  .string {
+    position: absolute;
+    width: 2px;
+    height: 40px;
+    background: #555;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -40px;
+  }
+
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: randomColor;
+    animation: fall 4s linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+
+  @media (max-width: 768px) {
+  body {
+    padding: 15px;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  section {
+    width: 90%;
+    padding: 6vmin;
+  }
+
+  .question-card {
+    font-size: 16px;
+    padding: 4vmin;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  #nextBtn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  #timeDisplay {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  #container {
+    width: 90%;
+  }
+
+  #message {
+    font-size: 2em;
+    padding: 10px;
+  }
+
+  img {
+    width: 80%;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  section {
+    width: 100%;
+    padding: 5vmin;
+  }
+
+  .question-card {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #message {
+    font-size: 1.8em;
+  }
+}
+
+
+    </style>
+</head>
+<body>
+    <section>
+      
+       <div id="timeDisplay"></div>
+       <div class="question-card"></div> 
+        <div id="options"></div>
+        <div class="feedback"></div>
+
+       
+        <div class="imageDiv"></div>
+        <button id="nextBtn">Next Question</button>
+    </section>
+
+    <script>
+const quizes = [
+  {question: "Seng Yin အကြိုက်ဆုံးမြန်မာ အစားအစာ က ဘာလဲ? ", imgs:"images/mit.jpeg" , answer:"မုန့်လင်မယား", selections:["မုန့်ဟင်းခါး","နန်းကြီးသုပ်","မုန့်လင်မယား"]},
+  {question: "gara mare gaw Seng Yin a buga rai kun?", imgs:"images/indonesiaflag.jpg" ,answer:"Mohnyin", selections:["Myitkyina", "Mohnyin", "Putao"]},
+  {question:"If Seng Yin born on 2007, 25th of October, then what's her birthday?🗿🗿 ", imgs:"images/USAmap.webp",answer:"October"+ 25, selections:["January"+6, "December"+13, "October"+25]},
+]
+
+const timer = document.querySelector('#timeDisplay');
+const questionCard = document.querySelector('.question-card');
+const optionsDiv = document.querySelector('#options');
+const feedback = document.querySelector('.feedback');
+const nextBtn = document.querySelector('#nextBtn');
+let intervalId;
+let timeLeft;
+let currentIndex = 0; 
+
+timer.textContent =` Time Left: ${timeLeft}s` ;
+
+function justTimer(){
+  timeLeft= 15;
+  timer.textContent =`Time Left: ${timeLeft}s`;
+  intervalId = setInterval(()=>{
+    timeLeft--;
+    timer.textContent =`Time Left: ${timeLeft}s`;
+    if(timeLeft <= 0){
+      clearInterval(intervalId);
+      timer.textContent = "Time's up";
+      nextBtn.style.display = 'block';
+    }
+  },1000)
+}
+
+function checkAnswer(selected, correct){
+  if(selected === correct) {
+    feedback.textContent = "Correct"
+  } else {
+    feedback.textContent = "Wrong";
+  }
+  optionsDiv.innerHTML="";
+  nextBtn.style.display="block";
+  clearInterval(intervalId);
+}
+
+function loadQuestion(index){
+  justTimer();
+  const {question,answer,selections} = quizes[index];
+  questionCard.textContent = question;
+  optionsDiv.innerHTML = "";
+  selections.forEach(opt=>{
+    const button = document.createElement('button');
+    button.textContent = opt;
+    button.addEventListener('click',()=>{checkAnswer(opt,answer)})
+    optionsDiv.appendChild(button)
+  })
+}
+
+nextBtn.addEventListener('click', ()=>{
+  currentIndex++;
+  if(currentIndex < quizes.length){
+    loadQuestion(currentIndex)
+  }  else {
+    // Quiz finished section
+    timer.textContent = "";
+    optionsDiv.innerHTML = "";
+    nextBtn.style.display = "none";
+    feedback.textContent = "";
+    questionCard.textContent = "🎉 Quiz finished! 🎉";
+
+    // 🎁 Create the birthday button
+    const birthdayDiv = document.createElement("div");
+    birthdayDiv.id = "container";
+    const birthdayBtn = document.createElement("button");
+    birthdayBtn.id = "birthdayButton";
+    birthdayBtn.textContent = "Click This 🎁";
+    birthdayDiv.appendChild(birthdayBtn);
+
+    const message = document.createElement("div");
+    message.id = "message";
+    message.textContent = "🎉 Happy Blessed Birthday Seng Yin! May God Bless you and Guide you always! 🎂";
+    birthdayDiv.appendChild(message);
+
+    // 📸 Birthday image section (example)
+    const img = document.createElement("img");
+img.src = "sengyin.jpg";
+
+
+// ← Replace this link
+    img.alt = "Seng Yin Birthday";
+    img.style.display = "none";
+    img.style.width = "250px";
+    img.style.borderRadius = "15px";
+    img.style.marginTop = "20px";
+    birthdayDiv.appendChild(img);
+
+    document.body.appendChild(birthdayDiv);
+
+    // 🎈 Button click event
+    birthdayBtn.addEventListener("click", () => {
+      message.style.display = "block";
+      birthdayBtn.style.display = "none";
+      img.style.display = "block"; // Show her photo
+      createBalloons(20);
+      createConfetti(60);
+    });
+  } 
+});
+
+loadQuestion(currentIndex);
+
+// 🎈 Balloon + confetti helper functions
+function createBalloons(num) {
+  for (let i = 0; i < num; i++) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.left = Math.random() * 100 + 'vw';
+    balloon.style.backgroundColor = randomColor();
+    balloon.style.animationDuration = 5 + Math.random() * 3 + 's';
+    document.body.appendChild(balloon);
+
+    const string = document.createElement('div');
+    string.classList.add('string');
+    balloon.appendChild(string);
+
+    setTimeout(() => {
+      balloon.remove();
+    }, 8000);
+  }
+}
+
+function createConfetti(num) {
+  for (let i = 0; i < num; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = randomColor();
+    confetti.style.width = confetti.style.height = Math.random() * 8 + 4 + 'px';
+    confetti.style.animationDuration = 2 + Math.random() * 3 + 's';
+    document.body.appendChild(confetti);
+
+    setTimeout(() => confetti.remove(), 5000);
+  }
+}
+
+function randomColor() {
+  const colors = ['#ff4d6d', '#ffb84d', '#4dff88', '#4da6ff', '#ff66ff', '#ffff66'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+</script>
+
+</body>
+</html>
